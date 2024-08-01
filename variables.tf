@@ -65,44 +65,35 @@ variable "create_vlan" {
   default     = true
   description = "Whether to create a new VLAN for this project."
 }
-variable "metal_vlan_id" {
+variable "vm_mgmt_vlan_id" {
   type        = number
   default     = null
   description = "ID of the VLAN you wish to use."
 }
-
-variable "metal_nutanix_os" {
-  type        = string
-  default     = "nutanix_lts_6_5"
-  description = "Which OS to use for the Nutanix nodes."
-}
-
-variable "metal_nutanix_plan" {
-  type        = string
-  default     = "m3.large.x86"
-  description = "Which plan to use for the Nutanix nodes (must be Nutanix compatible, see https://deploy.equinix.com/developers/os-compatibility/)"
-}
-
-variable "nutanix_node_count" {
+variable "esx_mgmt_vlan_id" {
   type        = number
-  default     = 3
-  description = "The number of Nutanix nodes to create."
+  default     = null
+  description = "ID of the VLAN you wish to use."
 }
-
+variable "vMotion_vlan_id" {
+  type        = number
+  default     = null
+  description = "ID of the VLAN you wish to use."
+}
+variable "vSAN_vlan_id" {
+  type        = number
+  default     = null
+  description = "ID of the VLAN you wish to use."
+}
+variable "NSX_vlan_id" {
+  type        = number
+  default     = null
+  description = "ID of the VLAN you wish to use."
+}
 variable "skip_cluster_creation" {
   type        = bool
   default     = false
   description = "Skip the creation of the Nutanix cluster."
-}
-
-variable "nutanix_reservation_ids" {
-  type        = list(string)
-  default     = []
-  description = <<EOT
-  Hardware reservation IDs to use for the Nutanix nodes. If specified, the length of this list must
-  be the same as `nutanix_node_count`.  Each item can be a reservation UUID or `next-available`. If
-  you use reservation UUIDs, make sure that they are in the same metro specified in `metal_metro`.
-  EOT
 }
 
 variable "create_vrf" {

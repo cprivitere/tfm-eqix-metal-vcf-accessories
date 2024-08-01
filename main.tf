@@ -45,13 +45,13 @@ resource "equinix_metal_vlan" "vm-mgmt" {
   project_id  = local.project_id
   description = var.metal_vlan_description
   metro       = var.metal_metro
-  vxlan       = var.metal_vlan_id
+  vxlan       = var.vm_mgmt_vlan_id
 }
 
 data "equinix_metal_vlan" "vm-mgmt" {
   count      = var.create_vlan ? 0 : 1
   project_id = local.project_id
-  vxlan      = var.metal_vlan_id
+  vxlan      = var.vm_mgmt_vlan_id
 }
 
 module "ssh" {
