@@ -47,8 +47,6 @@ write_files:
 - path: /etc/dnsmasq.d/vcf.config
   append: true
   content: |
-    bind-interfaces
-    interface=bond0.${metal_vlan_id}
     host-record=sfo01-m01-esx01.sfo.rainpole.io,172.16.11.101
     host-record=sfo01-m01-esx02.sfo.rainpole.io,172.16.11.102
     host-record=sfo01-m01-esx03.sfo.rainpole.io,172.16.11.103
@@ -63,15 +61,19 @@ write_files:
   append: true
   content: |
     allow all
-- path: /etc/systemd/resolved.conf
-  append: true
+- path: /etc/resolv.conf
+  append: false
   content: |
-    Domains=sfo.rainpole.io
+    nameserver 127.0.0.1
+    nameserver 147.75.207.207
+    nameserver 147.75.207.208
+    search sfo.rainpole.io
 packages:
   - iptables-persistent
   - dnsmasq
   - chrony
 runcmd:
 - sysctl -p /etc/sysctl.d/10-ip-forwarding.conf
+- systemctl disable systemd-resolved --now
 - systemctl restart networking
 - systemctl restart dnsmasq
