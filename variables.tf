@@ -31,10 +31,10 @@ variable "metal_project_id" {
   EOT
 }
 
-variable "cluster_subnet" {
+variable "esx_mgmt_subnet" {
   type        = string
-  default     = "192.168.100.0/22"
-  description = "nutanix cluster subnet"
+  default     = "172.16.11.0/24"
+  description = "esx mgmt subnet"
 }
 
 variable "metal_organization_id" {

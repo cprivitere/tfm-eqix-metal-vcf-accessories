@@ -1,5 +1,6 @@
 ## template: jinja
 #cloud-config
+hostname: bastion
 package_update: true
 package_upgrade: true
 package_reboot_if_required: true
@@ -43,12 +44,34 @@ write_files:
         netmask ${netmask}
         gateway ${gateway_address}
         vlan-raw-device bond0
+- path: /etc/dnsmasq.d/vcf.config
+  append: true
+  content: |
+    bind-interfaces
+    interface=bond0.${metal_vlan_id}
+    host-record=sfo01-m01-esx01.sfo.rainpole.io,172.16.11.101
+    host-record=sfo01-m01-esx02.sfo.rainpole.io,172.16.11.102
+    host-record=sfo01-m01-esx03.sfo.rainpole.io,172.16.11.103
+    host-record=sfo01-m01-esx04.sfo.rainpole.io,172.16.11.104
+    host-record=sfo-m01-vc01.sfo.rainpole.io,172.16.11.62
+    host-record=sfo-m01-nsx01.sfo.rainpole.io,172.16.11.65
+    host-record=sfo-m01-nsx01a.sfo.rainpole.io,172.16.11.66
+    host-record=sfo-m01-nsx01b.sfo.rainpole.io,172.16.11.67
+    host-record=sfo-m01-nsx01c.sfo.rainpole.io,172.16.11.68
+    host-record=sfo-vcf01.sfo.rainpole.io,172.16.11.59
+- path: /etc/chrony/conf.d/vcf.conf
+  append: true
+  content: |
+    allow all
+- path: /etc/systemd/resolved.conf
+  append: true
+  content: |
+    Domains=sfo.rainpole.io
 packages:
   - iptables-persistent
-  - expect
-  - sshpass
   - dnsmasq
+  - chrony
 runcmd:
 - sysctl -p /etc/sysctl.d/10-ip-forwarding.conf
 - systemctl restart networking
-- systemctl restart dnsmasq-
+- systemctl restart dnsmasq
