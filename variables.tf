@@ -4,12 +4,6 @@ variable "metal_auth_token" {
   description = "Equinix Metal API token."
 }
 
-variable "metal_vlan_description" {
-  type        = string
-  default     = "ntnx-demo"
-  description = "Description to add to created VLAN."
-}
-
 variable "metal_project_name" {
   type        = string
   default     = ""
@@ -60,32 +54,7 @@ variable "metal_bastion_plan" {
   description = "Which plan to use for the bastion host."
 }
 
-variable "create_vlan" {
-  type        = bool
-  default     = true
-  description = "Whether to create a new VLAN for this project."
-}
 variable "vm_mgmt_vlan_id" {
-  type        = number
-  default     = null
-  description = "ID of the VLAN you wish to use."
-}
-variable "esx_mgmt_vlan_id" {
-  type        = number
-  default     = null
-  description = "ID of the VLAN you wish to use."
-}
-variable "vMotion_vlan_id" {
-  type        = number
-  default     = null
-  description = "ID of the VLAN you wish to use."
-}
-variable "vSAN_vlan_id" {
-  type        = number
-  default     = null
-  description = "ID of the VLAN you wish to use."
-}
-variable "NSX_vlan_id" {
   type        = number
   default     = null
   description = "ID of the VLAN you wish to use."
@@ -108,7 +77,7 @@ variable "vrf_id" {
   description = "ID of the VRF you wish to use."
 }
 
-variable "cluster_gateway" {
+variable "vm_mgmt_gateway" {
   description = "The cluster gateway IP address"
   type        = string
   default     = ""
