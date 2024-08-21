@@ -9,5 +9,5 @@ output "bastion_public_ip" {
 }
 output "ssh_forward_command" {
   description = "SSH port forward command to use to connect to the Prism GUI"
-  value       = "ssh -L 8000:172.16.11.101:443 -i ${module.ssh.ssh_private_key} root@${equinix_metal_device.bastion.access_public_ipv4}"
+  value       = "ssh -L 8000:172.16.11.101:443 -L 8100:172.16.10.3:443 -i ${module.ssh.ssh_private_key} root@${equinix_metal_device.bastion.access_public_ipv4}"
 }
