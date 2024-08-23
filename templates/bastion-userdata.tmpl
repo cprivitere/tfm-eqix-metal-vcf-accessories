@@ -103,10 +103,6 @@ packages:
   - chrony
   - jq
   - bird
-  - unzip
-  - python3-pip
-  - python3-lxml
-  - pipx
 runcmd:
 - sysctl -p /etc/sysctl.d/10-ip-forwarding.conf
 - systemctl disable systemd-resolved --now

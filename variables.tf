@@ -48,12 +48,16 @@ variable "create_project" {
   description = "(Optional) to use an existing project matching `metal_project_name`, set this to false."
 }
 
+variable "metal_management_host_plan" {
+  type        = string
+  default     = "m3.small.x86"
+  description = "Which plan to use for the windows management host."
+}
 variable "metal_bastion_plan" {
   type        = string
   default     = "m3.small.x86"
-  description = "Which plan to use for the bastion host."
+  description = "Which plan to use for the ubuntu based bastion host."
 }
-
 variable "vm_mgmt_vlan_id" {
   type        = number
   default     = null

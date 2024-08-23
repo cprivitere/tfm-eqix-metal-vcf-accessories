@@ -25,7 +25,6 @@ resource "equinix_metal_port" "bastion_bond0" {
   reset_on_delete = true
 }
 
-
 resource "equinix_metal_project" "vcf" {
   count           = var.create_project ? 1 : 0
   name            = var.metal_project_name
@@ -44,5 +43,28 @@ module "ssh" {
 
 resource "equinix_metal_bgp_session" "bastion_bgp" {
   device_id      = equinix_metal_device.bastion.id
+  address_family = "ipv4"
+}
+
+resource "equinix_metal_device" "management_host" {
+  project_id = var.metal_project_id
+  hostname   = "management"
+
+  operating_system    = "windows_2022"
+  plan                = var.metal_management_host_plan
+  metro               = var.metal_metro
+  project_ssh_key_ids = [module.ssh.equinix_metal_ssh_key_id]
+
+}
+resource "equinix_metal_port" "management_host_bond0" {
+  depends_on      = [equinix_metal_device.management_host]
+  port_id         = [for p in equinix_metal_device.management_host.ports : p.id if p.name == "bond0"][0]
+  layer2          = false
+  bonded          = true
+  vlan_ids        = [data.equinix_metal_vlan.vm-mgmt.vlan_id]
+  reset_on_delete = true
+}
+resource "equinix_metal_bgp_session" "management_host" {
+  device_id      = equinix_metal_device.management_host.id
   address_family = "ipv4"
 }
